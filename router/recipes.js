@@ -6,58 +6,26 @@ import recipes from "../libs/recipes.js";
 // import express and store it in a variable called express ✅
 import express, { Router } from "express";
 
+//import functions from models
+import {
+  getRecipes,
+  getRecipeByID,
+  createRecipe,
+  updateRecipeByID,
+  deleteRecipeByID,
+} from "../models/recipes.js";
+
 // create a router called router ✅
 const recipesRouter = express.Router();
 
-// Get all recipes
-// use our get method on the router
-// path '/recipes'
-// req res
-// create a responseObject with the correct properties and values
-// when receive a request at recipes path, respond with the responseObject
-// payload of all recipes✅
-
+// Get all recipes, calls our getRecipes model
 recipesRouter.get("/", function (req, res) {
-  const responseObject = {
-    success: true,
-    payload: recipes,
-  };
-  res.json(responseObject);
+  res.json(getRecipes());
 });
 
-// we need it to pull up a specific recipe using the id tag.
-
-// We are gone use another Get method and we set the path to be /recipes:id
-// now add the parameters and for the function.
-// respond witht the payload of the specific recipe.
-// loop over the array of recipes to find the id that we need.
-
+// Get recipe by ID
 recipesRouter.get("/:id", (req, res) => {
-  let recipeId = req.params.id;
-  let searchedId = {};
-
-  // for loop - loop over every element of the recipes array✅
-  for (let i = 0; i < recipes.length; i++) {
-    // if matching id number found✅
-    if (Number(recipeId) === recipes[i].id) {
-      // respond with the recipe with the matching id✅
-      searchedId = recipes[i];
-      const responseObject = {
-        succes: true,
-        payload: searchedId,
-      };
-      res.json(responseObject);
-      return;
-    }
-  }
-
-  // if the for loop does not find a match
-  // respond with a failure message
-  const responseObject = {
-    success: false,
-    message: `Cannot find recipe with id: ${recipeId}`,
-  };
-  res.json(responseObject);
+  res.json(getRecipeByID(req.params.id));
 });
 
 // We now need to create a new recipe in the body of the API using POSTMAN.
@@ -117,33 +85,32 @@ recipesRouter.put("/:id", (req, res) => {
 
 // We are now deleting a recipe using a delete method
 recipesRouter.delete("/:id", (req, res) => {
-    // created a variable to store the ID of the request made, which is found on the path E.g localhost:3000/recipe/1, 1 is the id in this case. 
-    let recipeId = req.params.id;
-  
-    // for loop - loop over every element of the recipes array✅
-    for (let i = 0; i < recipes.length; i++) {
-      // if matching id number found✅
-      if (Number(recipeId) === recipes[i].id) {
-        // responds with a variable containing the .splice method which removes an object form an array from the location specified. ✅
-        let recipesDeleted = recipes.splice(i, 1);
-        const responseObject = {
-          succes: true,
-          payload: recipesDeleted,
-        };
-        res.json(responseObject);
-        return;
-      }
-    }
-  
-    // if the for loop does not find a match
-    // respond with a failure message
-    const responseObject = {
-      success: false,
-      message: `Cannot find recipe with id: ${recipeId}`,
-    };
-    res.json(responseObject);
-  });
+  // created a variable to store the ID of the request made, which is found on the path E.g localhost:3000/recipe/1, 1 is the id in this case.
+  let recipeId = req.params.id;
 
+  // for loop - loop over every element of the recipes array✅
+  for (let i = 0; i < recipes.length; i++) {
+    // if matching id number found✅
+    if (Number(recipeId) === recipes[i].id) {
+      // responds with a variable containing the .splice method which removes an object form an array from the location specified. ✅
+      let recipesDeleted = recipes.splice(i, 1);
+      const responseObject = {
+        succes: true,
+        payload: recipesDeleted,
+      };
+      res.json(responseObject);
+      return;
+    }
+  }
+
+  // if the for loop does not find a match
+  // respond with a failure message
+  const responseObject = {
+    success: false,
+    message: `Cannot find recipe with id: ${recipeId}`,
+  };
+  res.json(responseObject);
+});
 
 // export our router using ES6 ✅
 export default recipesRouter;
