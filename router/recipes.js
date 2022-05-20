@@ -17,7 +17,7 @@ const recipesRouter = express.Router();
 // when receive a request at recipes path, respond with the responseObject
 // payload of all recipes✅
 
-recipesRouter.get("/recipes", function (req, res) {
+recipesRouter.get("/", function (req, res) {
   const responseObject = {
     success: true,
     payload: recipes,
@@ -31,22 +31,33 @@ recipesRouter.get("/recipes", function (req, res) {
 // now add the parameters and for the function.
 // respond witht the payload of the specific recipe.
 // loop over the array of recipes to find the id that we need.
-recipesRouter.get("/recipes:id", (req, res) => {
-  let recipeId = req.params.id;
-    console.log(Number(recipeId));
-    console.log(recipes[0].id)
+
+recipesRouter.get("/:id", (req, res) => {
+  let recipeId = req.params.id;    
   let searchedId = {};
-  const responseObject = {
-    succes: true,
-    payload: searchedId,
-  };
-  for (let i = 0; i <= recipes.length; i++) {
-    if (Number(recipeId) == recipes[i].id) {
-      searchedId = recipes[i];
-      res.json(responseObject);
-      break;
+
+  // for loop - loop over every element of the recipes array
+    for (let i = 0; i < recipes.length; i++) {
+        // if matching id number found
+        if (Number(recipeId) === recipes[i].id) {
+            // respond with the recipe with the matching id
+            searchedId = recipes[i];
+            const responseObject = {
+                succes: true,
+                payload: searchedId,
+            };
+            res.json(responseObject); 
+            return;       
+        }
     }
-  }
+
+    // if the for loop does not find a match
+    // respond with a failure message    
+    const responseObject = {
+        success: false,
+        message: `Cannot find recipe with id: ${recipeId}`
+    }
+    res.json(responseObject);   
 });
 
 // export our router using ES6 ✅

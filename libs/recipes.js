@@ -8,7 +8,7 @@ const recipes = [
     Season to taste.`,
     image:
       "https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-4-500x375.jpg",
-  },
+  }  
 ];
 
 export default recipes;

@@ -13,7 +13,7 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // use our router ✅
-app.use(recipesRouter);
+app.use("/recipes", recipesRouter);
 
 /* DO NOT CHANGE THIS ROUTE - it serves our front-end */
 app.get("/", function (req, res) {
