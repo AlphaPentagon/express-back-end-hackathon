@@ -115,5 +115,35 @@ recipesRouter.put("/:id", (req, res) => {
   res.json(responseObject);
 });
 
+// We are now deleting a recipe using a delete method
+recipesRouter.delete("/:id", (req, res) => {
+    // created a variable to store the ID of the request made, which is found on the path E.g localhost:3000/recipe/1, 1 is the id in this case. 
+    let recipeId = req.params.id;
+  
+    // for loop - loop over every element of the recipes array✅
+    for (let i = 0; i < recipes.length; i++) {
+      // if matching id number found✅
+      if (Number(recipeId) === recipes[i].id) {
+        // responds with a variable containing the .splice method which removes an object form an array from the location specified. ✅
+        let recipesDeleted = recipes.splice(i, 1);
+        const responseObject = {
+          succes: true,
+          payload: recipesDeleted,
+        };
+        res.json(responseObject);
+        return;
+      }
+    }
+  
+    // if the for loop does not find a match
+    // respond with a failure message
+    const responseObject = {
+      success: false,
+      message: `Cannot find recipe with id: ${recipeId}`,
+    };
+    res.json(responseObject);
+  });
+
+
 // export our router using ES6 ✅
 export default recipesRouter;
