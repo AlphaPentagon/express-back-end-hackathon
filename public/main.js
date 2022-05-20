@@ -1,4 +1,4 @@
-const url = "";
+const url = "http://localhost:3000";
 
 const recipesSection = document.querySelector("#recipes");
 const getRecipeButton = document.querySelector("#get-recipes");
